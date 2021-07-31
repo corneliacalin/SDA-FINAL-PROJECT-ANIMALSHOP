@@ -12,8 +12,8 @@ public class Account {
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "user")
-    private String user;
+    @Column(name = "email")
+    private String email;
 
 
     @Column(name = "password")
@@ -26,8 +26,8 @@ public class Account {
     @Column(name = "address")
     private String address;
 
-    @OneToOne
-    @JoinColumn(name="role_id")
+    @Enumerated(EnumType.STRING)
+    @Column(name = "account_role")
     private Role role;
 
     public Long getId() {
@@ -38,12 +38,12 @@ public class Account {
         this.id = id;
     }
 
-    public String getUser() {
-        return user;
+    public String getEmail() {
+        return email;
     }
 
-    public void setUser(String user) {
-        this.user = user;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getPassword() {
@@ -76,5 +76,17 @@ public class Account {
 
     public void setRole(Role role) {
         this.role = role;
+    }
+
+    @Override
+    public String toString() {
+        return "Account{" +
+                "id=" + id +
+                ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                ", city='" + city + '\'' +
+                ", address='" + address + '\'' +
+                ", role=" + role +
+                '}';
     }
 }
