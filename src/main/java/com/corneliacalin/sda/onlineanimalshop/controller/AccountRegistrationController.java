@@ -35,7 +35,7 @@ public class AccountRegistrationController {
     @PostMapping
     public String registerAccount(@ModelAttribute(name = "user") @Valid AccountDTO accountDTO, BindingResult bindingResult) {
         if (accountService.accountExist(accountDTO.getEmail())) {
-            bindingResult.rejectValue("login", null, "account already exists");
+            bindingResult.rejectValue("email", null, "account already exists");
         }
         if (bindingResult.hasErrors()) {
             return "registration";

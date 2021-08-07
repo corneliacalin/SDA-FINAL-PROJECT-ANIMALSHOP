@@ -17,8 +17,8 @@ public class Product {
     @Column(name ="thumbnail")
     private String thumbnail;
 
-    @OneToOne
-    @JoinColumn(name="category")
+    @ManyToOne
+    @JoinColumn(name="category_id")
     private Category category;
 
     @Column(name="price")
@@ -26,15 +26,6 @@ public class Product {
 
     @Column (name="description")
     private String description;
-
-    public Product(String name, String thumbnail, Category category, Double price, String description) {
-        this.name = name;
-        this.thumbnail = thumbnail;
-        this.category = category;
-        this.price = price;
-        this.description = description;
-    }
-
 
     public Long getId() {
         return id;

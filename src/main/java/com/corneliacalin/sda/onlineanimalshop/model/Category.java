@@ -2,6 +2,7 @@ package com.corneliacalin.sda.onlineanimalshop.model;
 
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name="category")
@@ -14,9 +15,20 @@ public class Category {
     @Column(name="name")
     private String name;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name="parent_category_id")
     private Category parent;
+
+    @OneToMany(mappedBy = "parent")
+    private List<Category> subCategories;
+
+    public List<Category> getSubCategories() {
+        return subCategories;
+    }
+
+    public void setSubCategories(List<Category> subCategories) {
+        this.subCategories = subCategories;
+    }
 
     public Long getId() {
         return id;

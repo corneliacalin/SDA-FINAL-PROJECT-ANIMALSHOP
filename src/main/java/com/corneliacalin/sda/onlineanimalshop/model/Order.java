@@ -6,33 +6,34 @@ import java.sql.Timestamp;
 import java.util.List;
 
 @Entity
-@Table(name="shop_order")
+@Table(name = "shop_order")
 public class Order {
 
     @Id
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
-    @Column(name="id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long id;
 
-    @OneToOne
-    @JoinColumn(name="customer_id")
+    @ManyToOne
+    @JoinColumn(name = "customer_id")
     private Customer customer;
 
-    @Column(name="total_cost")
+    @Column(name = "total_cost")
     private Double totalCost;
 
-    @Column(name="delivery_address")
+    @Column(name = "delivery_address")
     private String deliveryAddress;
 
-    @Column(name="date_of_order")
+    @Column(name = "date_of_order")
     private Timestamp creationDate;
 
-    @OneToMany
-    @JoinColumn(name="order_line_id")
-    private List<OrderLine> orderline;
+    @OneToMany(mappedBy = "order")
+    private List<OrderLine> orderlines;
 
-    @Column (name="status")
-    private OrderStatus status;
+
+
+    @Column(name = "order_status")
+    private OrderStatus orderStatus;
 
     public Long getId() {
         return id;
@@ -74,23 +75,21 @@ public class Order {
         this.creationDate = creationDate;
     }
 
-    public List<OrderLine> getOrderline() {
-        return orderline;
+    public List<OrderLine> getOrderlines() {
+        return orderlines;
     }
 
-    public void setOrderline(List<OrderLine> orderline) {
-        this.orderline = orderline;
+    public void setOrderlines(List<OrderLine> orderlines) {
+        this.orderlines = orderlines;
     }
 
-    public OrderStatus getStatus() {
-        return status;
+    public OrderStatus getOrderStatus() {
+        return orderStatus;
     }
 
-    public void setStatus(OrderStatus status) {
-        this.status = status;
+    public void setOrderStatus(OrderStatus orderStatus) {
+        this.orderStatus = orderStatus;
     }
-// status livrata, acceptata, noua enum
-
 
     @Override
     public String toString() {
@@ -100,8 +99,8 @@ public class Order {
                 ", totalCost=" + totalCost +
                 ", deliveryAddress='" + deliveryAddress + '\'' +
                 ", creationDate=" + creationDate +
-                ", orderline=" + orderline +
-                ", status=" + status +
+                ", orderlines=" + orderlines +
+                ", orderStatus=" + orderStatus +
                 '}';
     }
 }
