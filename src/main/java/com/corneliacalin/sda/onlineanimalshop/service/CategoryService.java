@@ -17,15 +17,16 @@ public class CategoryService {
     private final CategoryRepository categoryRepository;
 
     @Autowired
-    public CategoryService( CategoryRepository categoryRepository) {
+    public CategoryService(CategoryRepository categoryRepository) {
         this.categoryRepository = categoryRepository;
 
     }
- public List<Category> getAll(){
+
+    public List<Category> getAll() {
         return StreamSupport.stream(categoryRepository.findAll().spliterator(), false).collect(Collectors.toList());
     }
 
-    public List<Category> getAllRoot(){
+    public List<Category> getAllRoot() {
         return StreamSupport.stream(categoryRepository.findAllByParentIsNull().spliterator(), false).collect(Collectors.toList());
     }
 }

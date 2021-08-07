@@ -1,5 +1,6 @@
 package com.corneliacalin.sda.onlineanimalshop.config;
 
+import com.corneliacalin.sda.onlineanimalshop.model.Role;
 import com.corneliacalin.sda.onlineanimalshop.service.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -25,6 +26,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                         "/css/**",
                         "/img/**",
                         "/webjars/**").permitAll()
+                .antMatchers("/product-list","/category-list").permitAll() // pagini publice
+                .antMatchers("/addproduct","/add-product","/add-category").hasAuthority(Role.ADMIN.name()) // pagini pentru admin
+                .antMatchers("/view-order").hasAuthority(Role.USER.name()) // pagini pentru user- customer
                 .anyRequest().authenticated()
                 .and()
                 .formLogin().loginPage("/login").permitAll()
