@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -23,35 +24,68 @@ public class ProductService {
         this.productRepository = productRepository;
         this.categoryRepository = categoryRepository;
     }
+
     @Transactional
 
-    public void save(Product product){
+    public void save(Product product) {
         productRepository.save(product);
 
 
     }
-    public List<Product> getAll(){  // getAll
 
-    return new ArrayList<Product>((Collection<? extends Product>) productRepository.findAll());
+    public List<Product> getAll() {  // getAll
+
+        return new ArrayList<Product>((Collection<? extends Product>) productRepository.findAll());
 //        return StreamSupport.stream(productRepository.findAll().spliterator(),false).collect(Collectors.toList());
 
 
     }
 
-    public Optional<Product> findById(Long productId){
+    public Optional<Product> findById(Long productId) {
         return productRepository.findById(productId);
 
     }
 
-    public void save (ProductDTO productDTO){
-        Product product = new Product ();
+    public ProductDTO findProductDTOById (Long productId){
+        Product product = productRepository.findById(productId).orElse(null);
+        ProductDTO productDTO= new ProductDTO();
+        productDTO.setId(product.getId());
+        productDTO.setName(product.getName());
+        productDTO.setPrice(product.getPrice().doubleValue());
+        productDTO.setDescription(product.getDescription());
+
+        productDTO.setThumbnail(product.getThumbnail());
+        productDTO.setProductCategoryId(product.getCategory().getId());
+        return productDTO;
+
+    }
+
+    public void save(ProductDTO productDTO) {
+        Product product = new Product();
         product.setName(productDTO.getName());
-        product.setPrice(productDTO.getPrice());
+        product.setPrice(new BigDecimal(productDTO.getPrice()));
         product.setDescription(productDTO.getDescription());
 
         product.setThumbnail(productDTO.getThumbnail());
         product.setCategory(categoryRepository.findById(productDTO.getProductCategoryId()).orElse(null));
         productRepository.save(product);
 
+    }
+
+    public void update(ProductDTO productDTO) {
+        Product product = productRepository.findById(productDTO.getId()).orElse(null);
+        product.setName(productDTO.getName());
+        product.setPrice(new BigDecimal(productDTO.getPrice()));
+        product.setDescription(productDTO.getDescription());
+
+        product.setThumbnail(productDTO.getThumbnail());
+        product.setCategory(categoryRepository.findById(productDTO.getProductCategoryId()).orElse(null));
+        productRepository.save(product);
+
+
+    }
+
+    public void delete(Long id) {
+        productRepository.deleteById(id);
     }
 }

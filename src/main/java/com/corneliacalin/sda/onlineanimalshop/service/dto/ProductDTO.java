@@ -3,6 +3,7 @@ package com.corneliacalin.sda.onlineanimalshop.service.dto;
 import com.corneliacalin.sda.onlineanimalshop.model.Category;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 
 public class ProductDTO {
 
@@ -10,6 +11,15 @@ public class ProductDTO {
     private String name;
     private String thumbnail;
     private Double price;
+
+    public Double getPrice() {
+        return price;
+    }
+
+    public void setPrice(Double price) {
+        this.price = price;
+    }
+
     private String description;
 
     private Long productCategoryId;
@@ -46,13 +56,6 @@ public class ProductDTO {
         this.thumbnail = thumbnail;
     }
 
-    public Double getPrice() {
-        return price;
-    }
-
-    public void setPrice(Double price) {
-        this.price = price;
-    }
 
     public String getDescription() {
         return description;

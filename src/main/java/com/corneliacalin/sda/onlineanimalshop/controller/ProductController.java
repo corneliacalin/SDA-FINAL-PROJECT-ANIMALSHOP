@@ -1,5 +1,6 @@
 package com.corneliacalin.sda.onlineanimalshop.controller;
 
+import com.corneliacalin.sda.onlineanimalshop.model.Product;
 import com.corneliacalin.sda.onlineanimalshop.service.CategoryService;
 import com.corneliacalin.sda.onlineanimalshop.service.ProductService;
 import com.corneliacalin.sda.onlineanimalshop.service.dto.ProductDTO;
@@ -24,32 +25,54 @@ public class ProductController {
     }
 
     @GetMapping("/product-list")
-  public String showProductsListPage (Model model) {
+    public String showProductsListPage(Model model) {
 
         model.addAttribute("products", productService.getAll());
         return "product-list"; // numele de la html
     }
-        //        List<Product> products =productService.findAll();
+    //        List<Product> products =productService.findAll();
 //        List<Category> categories=productService.findAll().stream()
 //                .map(product->product.getCategory()).collect(Collectors.toList());
 //        model.addAttribute("categories", categories);
 
 
-
     @GetMapping("/add-product")
-    public String addProduct(Model model){
+    public String addProduct(Model model) {
         model.addAttribute("product", new ProductDTO());
         model.addAttribute("categories", categoryService.getAll());
-       // model.addAttribute("categories", productService.getAll().stream().map(product->product.getCategory()).filter(product-> product !=null).distinct().collect(Collectors.toList()))  ;
         return "product-add";
     }
 
-        @PostMapping("/addproduct")
-    public String saveProduct(@ModelAttribute("product")@Valid ProductDTO productDTO, BindingResult bindingResult) {
-        if (bindingResult.hasErrors()){
+    @PostMapping("/addproduct")
+    public String saveProduct(@ModelAttribute("product") @Valid ProductDTO productDTO, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
             return "product-add";
         }
         productService.save(productDTO);
+        return "redirect:/product-list";
+    }
+
+    @GetMapping("/edit-product/{id}")
+    public String editProduct(@PathVariable("id") Long productId, Model model) {
+        ProductDTO productDTO = productService.findProductDTOById(productId);
+        model.addAttribute("product", productDTO);
+        model.addAttribute("categories", categoryService.getAll());
+
+        return "product-edit";
+    }
+
+    @PostMapping("/editproduct")
+    public String editProduct(@ModelAttribute("product") ProductDTO productDTO, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return "product-edit";
+        }
+        productService.update(productDTO);
+        return "redirect:/product-list";
+    }
+
+    @GetMapping("/delete-product/{id}")
+    public String deleteProduct(@PathVariable("id") Long productId) {
+        productService.delete(productId);
         return "redirect:/product-list";
     }
 
